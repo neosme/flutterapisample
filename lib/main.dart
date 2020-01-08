@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() => runApp(MyApp());
 
@@ -48,12 +49,18 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
-  var response = {};
-  var newval = {};
 
-  Future<Object> getData() async {
-    http.Response response = await http.get('https://api.github.com/repos/neosme/flutterapisample/commits/master');
-    print(response);
+  Future<List> getData() async {
+    http.Response response1 = await http.get('https://api.github.com/repos/neosme/flutterapisample/commits');
+    var responseNew = jsonDecode(response1.body);
+    var user = [];
+    if(responseNew.length !=0){
+    for (var u in responseNew){
+      print(u['sha']);
+    } 
+  }
+    // print(responseNew);
+    return responseNew;  
   }
 
   void _incrementCounter() {
@@ -81,40 +88,38 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
-            ),
-          ],
-        ),
+      body: Container(
+        child: FutureBuilder(
+        future: getData(),
+        builder: (BuildContext context, AsyncSnapshot snapshot){
+          return ListView.builder(
+            itemCount: snapshot.data.length,
+            itemBuilder: (BuildContext context, int index){
+              if(snapshot.data == null){
+              return Container(
+                  child: Center(
+                    child: Text("Loading...."),
+                  ),
+                );
+              }
+              else{
+              return ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: NetworkImage(snapshot.data[index]['author']['avatar_url']),
+                ),
+                title: Text(snapshot.data[index]['commit']['message']),
+                subtitle: Text(snapshot.data[index]['commit']['author']['name']),
+              );
+              }
+            },
+          );
+        },
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: getData,
         tooltip: 'Increment',
-        child: Icon(Icons.add),
+        child: Icon(Icons.refresh),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }

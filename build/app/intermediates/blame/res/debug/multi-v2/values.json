@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "H:\\flutterapisample\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "G:\\flutterapisample\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "H:\\flutterapisample\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "G:\\flutterapisample\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
