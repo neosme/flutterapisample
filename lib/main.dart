@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:intl/intl.dart';
+import 'package:moment/moment.dart';
 
 void main() => runApp(MyApp());
 
@@ -51,16 +53,8 @@ class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
   Future getData() async {
-    print('hgchgcbbbcvcbvbvcbvcbvcvbcbvcbcbvcbvcbvcbvc');
     http.Response response1 = await http.get('https://api.github.com/repos/neosme/flutterapisample/commits');
     var responseNew = jsonDecode(response1.body);
-    var user = [];
-    if(responseNew.length !=0){
-    for (var u in responseNew){
-      print(u['sha']);
-    } 
-  }
-    // print(responseNew);
     return responseNew;  
   }
 
@@ -104,12 +98,22 @@ class _MyHomePageState extends State<MyHomePage> {
                 );
               }
               else{
+                var string1 = Moment().format('yyyy-MM-dd hh:mm');
               return ListTile(
                 leading: CircleAvatar(
                   backgroundImage: NetworkImage(snapshot.data[index]['author']['avatar_url']),
                 ),
                 title: Text(snapshot.data[index]['commit']['message']),
-                subtitle: Text(snapshot.data[index]['commit']['author']['name']),
+                subtitle: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(snapshot.data[index]['commit']['author']['name']),
+                    ),
+                    Expanded(
+                      child: Text(string1),
+                    ),
+                  ],
+                ),
               );
               }
             },
