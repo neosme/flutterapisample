@@ -91,7 +91,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Container(
         child: FutureBuilder(
-        future: getData(),
+        future: getData(), 
         builder: (BuildContext context, AsyncSnapshot snapshot){
           return ListView.builder(
             itemCount: snapshot.data.length,
@@ -118,7 +118,9 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: getData,
+        onPressed: () {
+    setState(() {});
+  },
         tooltip: 'Increment',
         child: Icon(Icons.refresh),
       ), // This trailing comma makes auto-formatting nicer for build methods.
