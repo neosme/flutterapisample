@@ -50,7 +50,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
 
-  Future<List> getData() async {
+  Future getData() async {
+    print('hgchgcbbbcvcbvbvcbvcbvcvbcbvcbcbvcbvcbvcbvc');
     http.Response response1 = await http.get('https://api.github.com/repos/neosme/flutterapisample/commits');
     var responseNew = jsonDecode(response1.body);
     var user = [];
